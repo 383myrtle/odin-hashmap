@@ -1,13 +1,15 @@
+const KEY_INDEX = 0;
+const VAL_INDEX = 1;
+
 export class HashMap {
   constructor() {
-    this.loadFactor = 0.7;
+    this.loadFactor = 0.75;
     this.capacity = 16;
     this.buckets = [];
   }
 
   hash(key) {
     let hashCode = 0;
-
     const primeNumber = 31;
     for (let i = 0; i < key.length; i++) {
       hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
@@ -18,20 +20,31 @@ export class HashMap {
 
   set(key, value) {
     const hashCode = this.hash(key);
-    this.buckets[hashCode] = value;
+    const node = this.buckets[hashCode];
+    if (node) {
+      if (node[KEY_INDEX] === key) {
+        node[VAL_INDEX] = value;
+      } else {
+        console.log(`Collision: (${key}, ${value}) could not be stored.`);
+      }
+    } else {
+      this.buckets[hashCode] = [key, value];    
+    }
   }
 
   get(key) {
     const hashCode = this.hash(key);
-    const val = this.buckets[hashCode];
-    return val ? val : null;
+    const node = this.buckets[hashCode];
+    if (node) {
+      if (node[KEY_INDEX] === key) {
+        return node;
+      } 
+    }
+    return null;
   }
 
   has(key) {
-    const hashCode = this.hash(key);
-    if (this.buckets[hashCode]){
-        return true;
-    }
-    else return false;
+    const node = this.get(key);
+    return node ? true : false;
   }
 }
