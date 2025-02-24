@@ -6,6 +6,7 @@ export class HashMap {
     this.loadFactor = 0.75;
     this.capacity = 16;
     this.buckets = [];
+    this.lengthCounter = 0;
   }
 
   hash(key) {
@@ -28,7 +29,8 @@ export class HashMap {
         console.log(`Collision: (${key}, ${value}) could not be stored.`);
       }
     } else {
-      this.buckets[hashCode] = [key, value];    
+      this.buckets[hashCode] = [key, value];
+      this.lengthCounter++;
     }
   }
 
@@ -38,7 +40,7 @@ export class HashMap {
     if (node) {
       if (node[KEY_INDEX] === key) {
         return node;
-      } 
+      }
     }
     return null;
   }
@@ -46,5 +48,9 @@ export class HashMap {
   has(key) {
     const node = this.get(key);
     return node ? true : false;
+  }
+
+  length() {
+    return this.lengthCounter;
   }
 }
