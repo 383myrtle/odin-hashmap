@@ -26,4 +26,12 @@ export class HashMap {
     const val = this.buckets[hashCode];
     return val ? val : null;
   }
+
+  has(key) {
+    const hashCode = this.hash(key);
+    if (this.buckets[hashCode]){
+        return true;
+    }
+    else return false;
+  }
 }
