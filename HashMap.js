@@ -21,6 +21,9 @@ export class HashMap {
 
   set(key, value) {
     const hashCode = this.hash(key);
+    if (hashCode < 0 || hashCode >= this.capacity) {
+      throw new Error("Trying to access index out of bounds");
+    }
     const list = this.buckets[hashCode];
     if (list) {
       // Check if key in bucket and update value.
@@ -43,6 +46,9 @@ export class HashMap {
 
   get(key) {
     const hashCode = this.hash(key);
+    if (hashCode < 0 || hashCode >= this.capacity) {
+      throw new Error("Trying to access index out of bounds");
+    }
     const list = this.buckets[hashCode];
     for (let n = 0; n < list.size; n++) {
       const node = list.at(n).value;
@@ -60,6 +66,9 @@ export class HashMap {
 
   remove(key) {
     const hashCode = this.hash(key);
+    if (hashCode < 0 || hashCode >= this.capacity) {
+      throw new Error("Trying to access index out of bounds");
+    }
     const list = this.buckets[hashCode];
     if (!list) {
       return false;
