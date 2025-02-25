@@ -8,7 +8,6 @@ export class HashMap {
     this.loadFactor = 0.75;
     this.capacity = 16;
     this.buckets = [];
-    this.lengthCounter = 0;
   }
 
   hash(key) {
@@ -36,11 +35,9 @@ export class HashMap {
       // If key not in bucket, append it to the list
       list.append([key, value]);
       console.log("Collision: added new key " + key + " to the bucket");
-      this.lengthCounter++;
     } else {
       this.buckets[hashCode] = new LinkedList();
       this.buckets[hashCode].append([key, value]);
-      this.lengthCounter++;
     }
   }
 
@@ -61,7 +58,28 @@ export class HashMap {
     return node ? true : false;
   }
 
+  remove(key) {
+    const hashCode = this.hash(key);
+    const list = this.buckets[hashCode];
+    if (!list) {
+      return false;
+    }
+    for (let n = 0; n < list.size; n++) {
+      const node = list.at(n).value;
+      if (node[KEY_INDEX] === key) {
+        list.removeAt(n);
+        return true;
+      }
+    }
+  }
+
   length() {
-    return this.lengthCounter;
+    let length = 0;
+    this.buckets.forEach((list) => {
+      if (list) {
+        length += list.size;
+      }
+    });
+    return length;
   }
 }
