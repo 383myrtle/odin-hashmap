@@ -25,7 +25,7 @@ export class HashMap {
     const list = this.buckets[hashCode];
     if (list) {
       // Check if key in bucket and update value.
-      for (let n = 0; n++; n < list.size) {
+      for (let n = 0; n < list.size; n++) {
         const node = list.at(n).value;
         if (node[KEY_INDEX] === key) {
           node[VAL_INDEX] = value;
@@ -35,20 +35,20 @@ export class HashMap {
       }
       // If key not in bucket, append it to the list
       list.append([key, value]);
-      console.log("Added new key " + key + " to the bucket");
+      console.log("Collision: added new key " + key + " to the bucket");
       this.lengthCounter++;
     } else {
       this.buckets[hashCode] = new LinkedList();
       this.buckets[hashCode].append([key, value]);
-      console.log("Created new bucket and added " + key)
       this.lengthCounter++;
     }
   }
 
   get(key) {
     const hashCode = this.hash(key);
-    const node = this.buckets[hashCode];
-    if (node) {
+    const list = this.buckets[hashCode];
+    for (let n = 0; n < list.size; n++) {
+      const node = list.at(n).value;
       if (node[KEY_INDEX] === key) {
         return node;
       }
