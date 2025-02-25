@@ -26,24 +26,24 @@ export class LinkedList {
     return this._size;
   }
 
-  append(value) {
+  append(key, value) {
     if (this.size === 0) {
-      this.head = new Node(value);
+      this.head = new Node(key, value);
       this.tail = this.head;
     } else {
-      const node = new Node(value);
+      const node = new Node(key, value);
       this.tail.next = node;
       this.tail = node;
     }
     this.size++;
   }
 
-  prepend(value) {
+  prepend(key, value) {
     if (this.size === 0) {
-      this.head = new Node(value);
+      this.head = new Node(key, value);
       this.tail = this.head;
     } else {
-      const node = new Node(value);
+      const node = new Node(key, value);
       node.next = this.head;
       this.head = node;
     }
@@ -62,10 +62,10 @@ export class LinkedList {
     }
   }
 
-  contains(value) {
+  contains(key) {
     let pointer = this.head;
     while (pointer !== null) {
-      if (value === pointer.value) {
+      if (key === pointer.key) {
         return true;
       }
       pointer = pointer.next;
@@ -73,11 +73,11 @@ export class LinkedList {
     return false;
   }
 
-  find(value) {
+  find(key) {
     let pointer = this.head;
     let index = 0;
     while (pointer !== null) {
-      if (value === pointer.value) {
+      if (key === pointer.key) {
         return index;
       }
       pointer = pointer.next;
@@ -86,8 +86,8 @@ export class LinkedList {
     return null;
   }
 
-  insertAt(index, value) {
-    const node = new Node(value);
+  insertAt(index, key, value) {
+    const node = new Node(key, value);
     const prev = this.at(index);
     node.next = prev.next;
     prev.next = node;
@@ -125,7 +125,7 @@ export class LinkedList {
     let pointer = this.head;
     let str = "";
     while (pointer !== null) {
-      str = str + `(${pointer.value}) -> `;
+      str = str + `(${pointer.key}: ${pointer.value}) -> `;
       pointer = pointer.next;
     }
     str += "null";

@@ -1,8 +1,5 @@
 import { LinkedList } from "./LinkedList.js";
 
-const KEY_INDEX = 0;
-const VAL_INDEX = 1;
-
 export class HashMap {
   constructor() {
     this.loadFactor = 0.75;
@@ -28,19 +25,19 @@ export class HashMap {
     if (list) {
       // Check if key in bucket and update value.
       for (let n = 0; n < list.size; n++) {
-        const node = list.at(n).value;
-        if (node[KEY_INDEX] === key) {
-          node[VAL_INDEX] = value;
+        const node = list.at(n);
+        if (node.key === key) {
+          node.value = value;
           console.log("Updated value of " + key);
           return;
         }
       }
       // If key not in bucket, append it to the list
-      list.append([key, value]);
+      list.append(key, value);
       console.log("Collision: added new key " + key + " to the bucket");
     } else {
       this.buckets[hashCode] = new LinkedList();
-      this.buckets[hashCode].append([key, value]);
+      this.buckets[hashCode].append(key, value);
     }
     if (this.length() > this.capacity * this.loadFactor) {
       this.capacity = this.capacity * 2;
@@ -53,18 +50,26 @@ export class HashMap {
       throw new Error("Trying to access index out of bounds");
     }
     const list = this.buckets[hashCode];
-    for (let n = 0; n < list.size; n++) {
-      const node = list.at(n).value;
-      if (node[KEY_INDEX] === key) {
-        return node;
+    if (list) {
+      const index = list.find(key);
+      if (index !== null) {
+        return list.at(index);
       }
     }
     return null;
   }
 
   has(key) {
-    const node = this.get(key);
-    return node ? true : false;
+    const hashCode = this.hash(key);
+    if (hashCode < 0 || hashCode >= this.capacity) {
+      throw new Error("Trying to access index out of bounds");
+    }
+    const list = this.buckets[hashCode];
+
+    if (list) {
+      return list.contains(key);
+    }
+    return false;
   }
 
   remove(key) {
@@ -73,16 +78,14 @@ export class HashMap {
       throw new Error("Trying to access index out of bounds");
     }
     const list = this.buckets[hashCode];
-    if (!list) {
-      return false;
-    }
-    for (let n = 0; n < list.size; n++) {
-      const node = list.at(n).value;
-      if (node[KEY_INDEX] === key) {
-        list.removeAt(n);
+    if (list) {
+      const index = list.find(key);
+      if (index !== null) {
+        list.removeAt(index);
         return true;
       }
     }
+    return false;
   }
 
   length() {
@@ -105,8 +108,8 @@ export class HashMap {
     this.buckets.forEach((list) => {
       if (list) {
         for (let n = 0; n < list.size; n++) {
-          const node = list.at(n).value;
-          keys.push(node[KEY_INDEX]);
+          const node = list.at(n);
+          keys.push(node.key);
         }
       }
     });
@@ -118,8 +121,8 @@ export class HashMap {
     this.buckets.forEach((list) => {
       if (list) {
         for (let n = 0; n < list.size; n++) {
-          const node = list.at(n).value;
-          values.push(node[VAL_INDEX]);
+          const node = list.at(n);
+          values.push(node.value);
         }
       }
     });
@@ -131,11 +134,19 @@ export class HashMap {
     this.buckets.forEach((list) => {
       if (list) {
         for (let n = 0; n < list.size; n++) {
-          const node = list.at(n).value;
-          entries.push([node[KEY_INDEX], node[VAL_INDEX]]);
+          const node = list.at(n);
+          entries.push([node.key, node.value]);
         }
       }
     });
     return entries;
+  }
+
+  toString() {
+    this.buckets.forEach((list) => {
+      if (list) {
+        console.log(list.toString());
+      }
+    });
   }
 }
