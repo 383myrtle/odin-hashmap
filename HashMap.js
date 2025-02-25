@@ -82,4 +82,8 @@ export class HashMap {
     });
     return length;
   }
+
+  clear() {
+    this.buckets = []
+  }
 }
