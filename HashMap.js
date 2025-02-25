@@ -101,15 +101,28 @@ export class HashMap {
   }
 
   values() {
-    const keys = [];
+    const values = [];
     this.buckets.forEach((list) => {
       if (list) {
         for (let n = 0; n < list.size; n++) {
           const node = list.at(n).value;
-          keys.push(node[VAL_INDEX]);
+          values.push(node[VAL_INDEX]);
         }
       }
     });
-    return keys;
+    return values;
+  }
+
+  entries() {
+    const entries = [];
+    this.buckets.forEach((list) => {
+      if (list) {
+        for (let n = 0; n < list.size; n++) {
+          const node = list.at(n).value;
+          entries.push([node[KEY_INDEX], node[VAL_INDEX]]);
+        }
+      }
+    });
+    return entries;
   }
 }
