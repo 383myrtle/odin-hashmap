@@ -42,6 +42,9 @@ export class HashMap {
       this.buckets[hashCode] = new LinkedList();
       this.buckets[hashCode].append([key, value]);
     }
+    if (this.length() > this.capacity * this.loadFactor) {
+      this.capacity = this.capacity * 2;
+    }
   }
 
   get(key) {
