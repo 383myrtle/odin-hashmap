@@ -97,6 +97,7 @@ export class HashMap {
 
   clear() {
     this.buckets = [];
+    this.capacity = 16;
   }
 
   keys() {
