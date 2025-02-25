@@ -96,6 +96,7 @@ export class LinkedList {
   removeAt(index) {
     if (index === 0) {
       this.head = this.head.next;
+      this.size--;
       return;
     }
     const node = this.at(index);
@@ -104,6 +105,7 @@ export class LinkedList {
     if (index === this.size - 1) {
       this.tail = prev;
     }
+    this.size--;
   }
 
   pop() {
