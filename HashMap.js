@@ -1,3 +1,5 @@
+import { LinkedList } from "./LinkedList.js";
+
 const KEY_INDEX = 0;
 const VAL_INDEX = 1;
 
@@ -15,21 +17,30 @@ export class HashMap {
     for (let i = 0; i < key.length; i++) {
       hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
     }
-    console.log(`Hash code of ${key}: ${hashCode}`);
     return hashCode;
   }
 
   set(key, value) {
     const hashCode = this.hash(key);
-    const node = this.buckets[hashCode];
-    if (node) {
-      if (node[KEY_INDEX] === key) {
-        node[VAL_INDEX] = value;
-      } else {
-        console.log(`Collision: (${key}, ${value}) could not be stored.`);
+    const list = this.buckets[hashCode];
+    if (list) {
+      // Check if key in bucket and update value.
+      for (let n = 0; n++; n < list.size) {
+        const node = list.at(n).value;
+        if (node[KEY_INDEX] === key) {
+          node[VAL_INDEX] = value;
+          console.log("Updated value of " + key);
+          return;
+        }
       }
+      // If key not in bucket, append it to the list
+      list.append([key, value]);
+      console.log("Added new key " + key + " to the bucket");
+      this.lengthCounter++;
     } else {
-      this.buckets[hashCode] = [key, value];
+      this.buckets[hashCode] = new LinkedList();
+      this.buckets[hashCode].append([key, value]);
+      console.log("Created new bucket and added " + key)
       this.lengthCounter++;
     }
   }
