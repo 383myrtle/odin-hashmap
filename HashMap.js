@@ -84,6 +84,32 @@ export class HashMap {
   }
 
   clear() {
-    this.buckets = []
+    this.buckets = [];
+  }
+
+  keys() {
+    const keys = [];
+    this.buckets.forEach((list) => {
+      if (list) {
+        for (let n = 0; n < list.size; n++) {
+          const node = list.at(n).value;
+          keys.push(node[KEY_INDEX]);
+        }
+      }
+    });
+    return keys;
+  }
+
+  values() {
+    const keys = [];
+    this.buckets.forEach((list) => {
+      if (list) {
+        for (let n = 0; n < list.size; n++) {
+          const node = list.at(n).value;
+          keys.push(node[VAL_INDEX]);
+        }
+      }
+    });
+    return keys;
   }
 }
