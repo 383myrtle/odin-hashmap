@@ -73,12 +73,25 @@ export class LinkedList {
     return false;
   }
 
-  find(key) {
+  findIndex(key) {
     let pointer = this.head;
     let index = 0;
     while (pointer !== null) {
       if (key === pointer.key) {
         return index;
+      }
+      pointer = pointer.next;
+      index++;
+    }
+    return null;
+  }
+
+  findNode(key){
+    let pointer = this.head;
+    let index = 0;
+    while (pointer !== null) {
+      if (key === pointer.key) {
+        return pointer;
       }
       pointer = pointer.next;
       index++;
