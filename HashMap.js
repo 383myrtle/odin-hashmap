@@ -59,7 +59,7 @@ export class HashMap {
     const list = this.buckets[hashCode];
     const index = list.find(key);
     if (index !== null) {
-      return list.at(index);
+      return list.at(index).value;
     }
     return null;
   }
